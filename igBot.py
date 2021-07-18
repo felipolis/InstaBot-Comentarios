@@ -1,14 +1,15 @@
-from selenium import webdriver
+from selenium.webdriver import Chrome
 from selenium.webdriver.common.keys import Keys
 import time
 import random
 
 
 class InstagramBot:
-    def __init__(self, username, password):
+    def __init__(self, username, password, hashtag):
         self.username = username
         self.password = password
-        self.driver = webdriver.Firefox(executable_path="C:/WebDriver/bin/geckodriver.exe")
+        self.hashtag = hashtag
+        self.driver = Chrome()
 
     def login(self):
         driver = self.driver
@@ -28,7 +29,7 @@ class InstagramBot:
         campo_senha.send_keys(self.password)
         campo_senha.send_keys(Keys.RETURN)
         time.sleep(5)
-        self.comente_nas_fotos_com_a_hashtag("calistenia")
+        self.comente_nas_fotos_com_a_hashtag(self.hashtag)
 
     @staticmethod
     def digite_como_uma_pessoa(frase, onde_digitar):
@@ -48,7 +49,6 @@ class InstagramBot:
         hrefs = driver.find_elements_by_tag_name('a')
         pic_hrefs = [elem.get_attribute('href') for elem in hrefs]
         print(pic_hrefs)
-        # [href for href in pic_hrefs if hashtag in href]
         print(hashtag + ' fotos ' + str(len(pic_hrefs)))
 
         for pic_href in pic_hrefs:
@@ -70,5 +70,6 @@ class InstagramBot:
 
 user = str(input("Digite o nome de usuario: "))
 passw = str(input("Digite a sua senha: "))
-archanjoBot = InstagramBot(user, passw)
+hash = str(input("Digite uma hashtag [sem o #]: "))
+archanjoBot = InstagramBot(user, passw, hash)
 archanjoBot.login()
